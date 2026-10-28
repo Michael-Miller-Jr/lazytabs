@@ -1,0 +1,19 @@
+﻿{
+  "manifest_version": 3,
+  "name": "Lazy Tabs",
+  "version": "1.1",
+  "description": "Discards inactive tabs to save memory.",
+  "permissions": [ "tabs", "alarms", "storage", "scripting" ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Lazy Tabs",
+    "default_popup": "popup.html"
+  },
+  "options_page": "options.html",
+  "icons": {
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
