@@ -1,6 +1,8 @@
 # Lazy Tabs
 
-**Lazy Tabs** is a lightweight Chrome extension that reclaims your system memory by automatically discarding tabs you aren't currently using. It unloads the page content of inactive tabs—freeing up RAM and CPU—while keeping the tab visible in your tab strip so you can click to reload it instantly. Chrome renders tabs fast, so the delay is barely noticeable, but the memory savings are very real. Crucially, it includes a **persistent per-tab disable list** so pages with unsaved work (forms, drafts, dashboards) are never touched—even across browser restarts and session restores.
+<img width="347" height="493" alt="Screenshot 2026-10-29 053649" src="https://github.com/user-attachments/assets/6e233cf5-7a68-4388-a1c1-77cb7be2c1a8" />
+
+**Lazy Tabs** is a lightweight Chrome extension that reclaims your system memory by automatically discarding tabs you aren't currently using. It unloads the page content of inactive tabs - freeing up RAM and CPU - while keeping the tab visible in your tab strip so you can click to reload it instantly. Chrome renders tabs fast, so the delay is barely noticeable, but the memory savings are very real. Crucially, it includes a **persistent per-tab disable list** so pages with unsaved work (forms, drafts, dashboards) are never touched - even across browser restarts and session restores.
 
 For the sake of clarity: When the description says it "discards" or "saves memory," it means that the extension:
 - Calls `chrome.tabs.discard()` on inactive tabs, which unloads their renderer processes from RAM while keeping the tab entry and its title/favicon in the tab bar.
@@ -8,16 +10,16 @@ For the sake of clarity: When the description says it "discards" or "saves memor
 - Skips pinned tabs (optionally), audible tabs, and chrome:// pages automatically.
 - Runs on a configurable alarm (default every 15 minutes) in the background, plus a manual "Discard Now" button in the popup.
 
-This protects your system's memory without you having to think about it—Chrome's own tab management is conservative, and this extension is not.
+This protects your system's memory without you having to think about it - Chrome's own tab management is conservative, and this extension is not.
 
 So to clarify: the extension doesn't replace Chrome's Memory Saver or close tabs for you. It safely unloads background tabs so the pages you *are* using get the RAM they deserve. That's the key to a responsive browser.
 
 ## 💡 Why This Exists
-Modern browsers are memory-hungry. Twenty open tabs across a few sites can easily consume several gigabytes of RAM, which slows down the whole system—especially on laptops or machines with limited memory. Chrome has a built-in Memory Saver, but it's often conservative, and it has no concept of "this specific tab has unsaved form data, never touch it."
+Modern browsers are memory-hungry. Twenty open tabs across a few sites can easily consume several gigabytes of RAM, which slows down the whole system - especially on laptops or machines with limited memory. Chrome has a built-in Memory Saver, but it's often conservative, and it has no concept of "this specific tab has unsaved form data, never touch it."
 
 Lazy Tabs was built to fill that gap: an aggressive, user-controlled memory saver with a hard guarantee that **tabs you mark as protected are never discarded**, no matter what.
 
-Just as individuals can choose which apps run in the foreground and which stay backgrounded on their phones, users should be able to tell their browser: "I'm done with this tab for now—free the RAM, but keep it around."
+Just as individuals can choose which apps run in the foreground and which stay backgrounded on their phones, users should be able to tell their browser: "I'm done with this tab for now - free the RAM, but keep it around."
 
 This tool isn't about closing your work; it's about keeping the tabs you aren't using dormant so the ones you *are* using stay snappy.
 
@@ -29,7 +31,7 @@ This tool isn't about closing your work; it's about keeping the tabs you aren't 
   Unloads inactive tabs on a timer (default 15 minutes) via `chrome.tabs.discard()`, freeing renderer memory while keeping tabs visible and instantly reloadable.
 
 - **Persistent Per-Tab Protection**
-  Click "Disable on this tab" in the popup and that page is protected **forever**—across browser restarts, crashes, and history restores. Protection is keyed on `origin + pathname`, so it survives title changes and tab reordering.
+  Click "Disable on this tab" in the popup and that page is protected **forever** - across browser restarts, crashes, and history restores. Protection is keyed on `origin + pathname`, so it survives title changes and tab reordering.
 
 - **Smart Safety Skips**
   Never touches pinned tabs (unless you enable it in options), audible tabs (playing music/video), or internal `chrome://` / `edge://` pages.
@@ -46,6 +48,8 @@ This tool isn't about closing your work; it's about keeping the tabs you aren't 
 - **Clean Options Page**
   Toggle auto-discard and choose whether pinned tabs should also be discarded.
 
+  <img width="767" height="343" alt="Screenshot 2026-10-29 053719" src="https://github.com/user-attachments/assets/837ecd3d-cfea-4efb-b16d-6caf165a44c6" />
+
 ---
 
 ## 🧱 Works Best For
@@ -58,13 +62,13 @@ Lazy Tabs is designed to complement your existing browser setup, not replace it.
   If you hoard 100+ tabs across sessions, Lazy Tabs keeps the inactive ones from dragging your system down.
 
 - **Power Users on Low-RAM Machines**
-  Laptops with 8GB or less see the biggest benefit—background tabs stop competing with the apps you're actually using.
+  Laptops with 8GB or less see the biggest benefit - background tabs stop competing with the apps you're actually using.
 
 These tools handle organization. Lazy Tabs handles memory pressure.
 
 ---
 
-## 🛠️ Installation — Manual Load Required
+## 🛠️ Installation  -  Manual Load Required
 
 **Lazy Tabs is not available on the Chrome Web Store, and it must be installed manually as an unpacked extension.** There is no `.crx`, no store listing, and no installer. You load it directly from the source folder.
 
@@ -74,13 +78,13 @@ These tools handle organization. Lazy Tabs handles memory pressure.
 4. Click **Load unpacked** and select the extension folder.
 5. The Lazy Tabs icon will now appear in your toolbar.
 
-Because it's unpacked, Chrome will show a "Developer mode extensions" warning on startup. This is expected and cannot be suppressed without store publication—see the section below for why that tradeoff is intentional.
+Because it's unpacked, Chrome will show a "Developer mode extensions" warning on startup. This is expected and cannot be suppressed without store publication - see the section below for why that tradeoff is intentional.
 
 ---
 
 ## ❓ Why Manual / Unpacked (Required, Not Optional)
 
-Running unpacked isn't a convenience here—it's a **design requirement**. Publishing to the Chrome Web Store would break core functionality or get the extension removed outright. This section explains exactly why.
+Running unpacked isn't a convenience here - it's a **design requirement**. Publishing to the Chrome Web Store would break core functionality or get the extension removed outright. This section explains exactly why.
 
 ### 🚫 1. Avoid Extension Fingerprinting
 
@@ -108,14 +112,14 @@ Submitting to the store would mean either stripping these features or waiting fo
 
 ### 📌 3. You Control Updates
 
-There is no auto-update channel. When a new version is released, you pull the repo and click **Reload** on `chrome://extensions/`. This is deliberate—no silent behavior changes, no surprise permission creep. It also means **you must update manually** to receive new features and fixes.
+There is no auto-update channel. When a new version is released, you pull the repo and click **Reload** on `chrome://extensions/`. This is deliberate - no silent behavior changes, no surprise permission creep. It also means **you must update manually** to receive new features and fixes.
 
 ### ⚠️ What This Means in Practice
 
 - The extension will **not** auto-install or auto-update.
 - Chrome will show a persistent "developer mode" warning bubble on some versions. This is cosmetic and unavoidable without store publication.
 - You are responsible for pulling updates from this repository.
-- Reinstalling the extension (removing and re-adding the unpacked folder) clears `chrome.storage.local`—including your protected-tab list.
+- Reinstalling the extension (removing and re-adding the unpacked folder) clears `chrome.storage.local` - including your protected-tab list.
 
 If any of those tradeoffs are unacceptable, Lazy Tabs is not the right fit. The manual-load model is the cost of the feature set above.
 
@@ -247,4 +251,4 @@ Pull requests and issues are welcome! Whether it's improving the discard logic, 
 
 ## 🧊 Final Note
 
-Lazy Tabs is for users who want their browser to be fast, quiet, and honest about resource usage—without losing their place. Install it, protect the tabs that matter, and browse light.
+Lazy Tabs is for users who want their browser to be fast, quiet, and honest about resource usage - without losing their place. Install it, protect the tabs that matter, and browse light.
