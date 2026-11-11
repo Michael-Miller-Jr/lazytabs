@@ -4,27 +4,11 @@
     const headerStatus = document.getElementById('header-status');
     const statusBadge = document.getElementById('status-badge');
     const discardCountEl = document.getElementById('discard-count');
-    const memorySavedEl = document.getElementById('memory-saved');
     const bottomText = document.getElementById('bottom-text');
     const bottomDot = document.getElementById('bottom-dot');
     const discardNowBtn = document.getElementById('discard-now-btn');
     const whitelistBtn = document.getElementById('whitelist-btn');
     const optionsLink = document.getElementById('options-link');
-    const themeBtn = document.getElementById('theme-btn');
-
-    // --- Theme Logic ---
-    const themeData = await chrome.storage.local.get(['theme']);
-    if (themeData.theme === 'light') {
-        document.body.classList.add('light-mode');
-        themeBtn.textContent = '☀️';
-    }
-
-    themeBtn.addEventListener('click', async () => {
-        document.body.classList.toggle('light-mode');
-        const isLight = document.body.classList.contains('light-mode');
-        themeBtn.textContent = isLight ? '☀️' : '🌙';
-        await chrome.storage.local.set({ theme: isLight ? 'light' : 'dark' });
-    });
 
     // --- Options Link Logic ---
     optionsLink.addEventListener('click', () => {
@@ -48,7 +32,8 @@
         if (!url) return null;
         try {
             const parsed = new URL(url);
-            return parsed.origin + parsed.pathname;
+            let path = parsed.pathname.replace(/\/$/, "");
+            return parsed.hostname + path;
         } catch (e) {
             return url;
         }
@@ -72,16 +57,25 @@
                 newDisabledTabs = disabledTabs.filter(item => item !== fingerprint);
             } else {
                 newDisabledTabs = [...disabledTabs, fingerprint];
-                // Immediately protect the current tab so it doesn't lose unsaved work
+
                 try {
                     await chrome.scripting.executeScript({
                         target: { tabId: activeTab.id },
-                        func: () => { window.addEventListener('beforeunload', () => { }); }
+                        func: () => {
+                            if (window.__lazyTabsProtected) return;
+                            window.__lazyTabsProtected = true;
+                            window.addEventListener('beforeunload', (e) => { e.preventDefault(); e.returnValue = ''; });
+                            setInterval(() => {
+                                if (document.visibilityState === 'hidden') {
+                                    window.__lazyTabsPing = new Date().getTime();
+                                }
+                            }, 20000);
+                        }
                     });
                 } catch (e) { }
             }
             await chrome.storage.local.set({ disabledTabs: newDisabledTabs });
-            window.close(); // Close popup to refresh state
+            window.close();
         });
     } else {
         whitelistBtn.textContent = "Cannot modify this tab";
@@ -97,18 +91,18 @@
     });
 
     discardNowBtn.addEventListener('click', async () => {
-        discardNowBtn.textContent = "Discarding...";
+        discardNowBtn.textContent = "Freeing Memory...";
         const response = await chrome.runtime.sendMessage({ action: "discardNow" });
 
         if (response && response.count > 0) {
             const newCount = discardCount + response.count;
             await chrome.storage.local.set({ discardCount: newCount });
             updateStats(newCount);
-            discardNowBtn.textContent = `Discarded ${response.count} tabs!`;
+            discardNowBtn.textContent = `Freed ${response.count} tabs!`;
         } else {
             discardNowBtn.textContent = "No tabs to discard";
         }
-        setTimeout(() => discardNowBtn.textContent = "Discard Inactive Tabs Now", 2000);
+        setTimeout(() => discardNowBtn.textContent = "Free Memory Now", 2000);
     });
 
     function updateUI(enabled) {
@@ -137,6 +131,5 @@
 
     function updateStats(count) {
         discardCountEl.textContent = count;
-        memorySavedEl.textContent = `~${(count * 50)} MB`;
     }
 });
