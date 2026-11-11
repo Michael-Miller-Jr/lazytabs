@@ -1,6 +1,6 @@
 # Lazy Tabs
 
-<img width="347" height="493" alt="Screenshot 2026-10-29 053649" src="https://github.com/user-attachments/assets/6e233cf5-7a68-4388-a1c1-77cb7be2c1a8" />
+<img width="340" height="486" alt="Screenshot 2026-11-10 222658" src="https://github.com/user-attachments/assets/6b1fe1f6-3575-4982-84ff-ffacfead028c" />
 
 **Lazy Tabs** is a lightweight Chrome extension that reclaims your system memory by automatically discarding tabs you aren't currently using. It unloads the page content of inactive tabs - freeing up RAM and CPU - while keeping the tab visible in your tab strip so you can click to reload it instantly. Chrome renders tabs fast, so the delay is barely noticeable, but the memory savings are very real. Crucially, it includes a **persistent per-tab disable list** so pages with unsaved work (forms, drafts, dashboards) are never touched - even across browser restarts and session restores.
 
